@@ -4,8 +4,8 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useLanguage } from '@/context/LanguageContext';
 
-// Target date: April 15, 2026
-const TARGET_DATE = new Date('2026-04-15T00:00:00');
+// Target date: April 10, 2026
+const TARGET_DATE = new Date('2026-04-10T00:00:00');
 
 interface TimeLeft {
     days: number;

@@ -1,128 +1,97 @@
 'use client';
 
-import { useState, useRef } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
+import { motion, AnimatePresence, useScroll, useTransform, type Variants } from 'framer-motion';
 import Image from 'next/image';
 import { useLanguage } from '@/context/LanguageContext';
-import { cn } from '@/lib/utils';
+import { X, ZoomIn, ChevronLeft, ChevronRight } from 'lucide-react';
 
-const timelineData = [
-    {
-        year: '2019',
-        title: 'THE ORIGIN',
-        text: 'Our journey began in 2019 with a groundbreaking achievement: becoming the first university division team from our country to compete in the NASA Rover Challenge.',
-        image: '/stem/stem-1.webp',
-    },
-    {
-        year: '2020',
-        title: 'PERSEVERANCE IN ADVERSITY',
-        text: 'Despite the challenges of the global pandemic, our resilience shone through. Lessons learned paved the way for our historic \'System Safety Award\' victory.',
-        image: '/stem/stem-2.webp',
-    },
-    {
-        year: '2022',
-        title: 'EXPANDING OUR IMPACT',
-        text: '2022 marked a turning point with the launch of our interactive \'STEM Tour,\' culminating in winning the prestigious \'Engagement Award.\'',
-        image: '/stem/stem-3.webp',
-    },
-    {
-        year: '2023',
-        title: 'A HISTORIC YEAR',
-        text: 'A year of Dominican dominance! Major improvements earned us the \'Most Improved\' and \'Team Spirit\' awards, cementing our place in history.',
-        image: '/stem/stem-4.webp',
-    },
-    {
-        year: '2024',
-        title: 'SETTING THE STANDARD',
-        text: 'Rising from 2023\'s successes, we reached new heights in 2024. Our hard work earned us the coveted \'Overall Award (2nd place)\' and the \'Spirit Award,\' showcasing excellence and unity.',
-        image: '/stem/stem-1.webp',
-    }
-];
-
-const year2025 = {
-    year: '2025',
-    left: {
-        title: 'NEW FRONTIERS',
-        text: 'The dawn of the Apolo Division marks a new chapter in 2025. With our sights set high, we\'re pushing the boundaries of innovation and teamwork.',
-        image: '/stem/stem-2.webp'
-    },
-    right: {
-        title: 'PIONEERING RC MISSIONS',
-        text: 'Our RC team embarks on its first year with bold ideas and even bolder engineering. We\'re ready to make our mark in the world of remote-controlled exploration.',
-        image: '/stem/stem-3.webp'
-    }
-};
-
-const fadeUpVariant: any = {
+const fadeUpVariant: Variants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
 };
 
+const slideFromLeft: Variants = {
+    hidden: { opacity: 0, x: -50 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] } }
+};
+
+const slideFromRight: Variants = {
+    hidden: { opacity: 0, x: 50 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] } }
+};
+
+const rowContainerVariant: Variants = {
+    hidden: {},
+    visible: { transition: { staggerChildren: 0.15 } }
+};
+
 const TextCard = ({ title, text }: { title: string, text: string }) => (
-    <div className="w-full h-full bg-zinc-950/95 backdrop-blur-md border border-zinc-800/80 !p-12 sm:!p-16 rounded-xl relative group transition-all duration-500 hover:border-red-500/50 hover:bg-zinc-900/95 flex flex-col justify-center items-center text-center shadow-lg">
-        <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-red-600/50 rounded-tl-xl transition-all duration-300 group-hover:w-6 group-hover:h-6 group-hover:border-red-500" />
-        <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-red-600/50 rounded-br-xl transition-all duration-300 group-hover:w-6 group-hover:h-6 group-hover:border-red-500" />
-        
-        <h4 className="text-xl sm:text-2xl font-black text-white uppercase tracking-wider mb-6 group-hover:text-red-500 transition-colors duration-300 w-full">
+    <div className="w-full h-full bg-gradient-to-br from-zinc-950/95 via-zinc-950/90 to-zinc-900/80 backdrop-blur-md border border-zinc-800/60 !p-12 sm:!p-16 rounded-2xl relative group transition-all duration-500 hover:border-red-500/40 hover:shadow-[0_8px_40px_rgba(220,38,38,0.08)] hover:-translate-y-1 flex flex-col justify-center items-center text-center shadow-lg">
+        {/* Corner accents with animated glow */}
+        <div className="absolute top-0 left-0 w-5 h-5 border-t-2 border-l-2 border-red-600/40 rounded-tl-2xl transition-all duration-500 group-hover:w-8 group-hover:h-8 group-hover:border-red-500 group-hover:shadow-[0_0_12px_rgba(220,38,38,0.3)]" />
+        <div className="absolute bottom-0 right-0 w-5 h-5 border-b-2 border-r-2 border-red-600/40 rounded-br-2xl transition-all duration-500 group-hover:w-8 group-hover:h-8 group-hover:border-red-500 group-hover:shadow-[0_0_12px_rgba(220,38,38,0.3)]" />
+
+        <h4 className="text-xl sm:text-2xl font-black text-white uppercase tracking-wider mb-3 group-hover:text-red-500 transition-colors duration-300 w-full">
             {title}
         </h4>
-        <p className="text-zinc-300 leading-relaxed text-sm sm:text-base font-medium w-full max-w-sm mx-auto">
+        {/* Decorative separator */}
+        <div className="w-8 h-[2px] bg-red-600/60 rounded-full mb-5 transition-all duration-500 group-hover:w-12 group-hover:bg-red-500" />
+        <p className="text-zinc-400 leading-relaxed text-sm sm:text-base font-medium w-full max-w-sm mx-auto">
             {text}
         </p>
     </div>
 );
 
 const ImageCard = ({ title, image, onOpenModal }: { title: string, image: string, onOpenModal: (img: string) => void }) => (
-    <div 
+    <div
         onClick={() => onOpenModal(image)}
-        className="w-full h-full min-h-[280px] md:min-h-[350px] relative rounded-xl overflow-hidden border border-zinc-800/80 group cursor-pointer shadow-lg bg-[#050505]"
+        className="w-full h-full min-h-[280px] md:min-h-[350px] relative rounded-2xl overflow-hidden border border-zinc-800/60 group cursor-pointer shadow-lg bg-[#050505] transition-all duration-500 hover:border-red-500/30 hover:shadow-[0_8px_40px_rgba(220,38,38,0.08)] hover:-translate-y-1"
     >
-        <Image 
-            src={image} 
-            alt={title} 
-            fill 
-            className="object-cover opacity-80 group-hover:opacity-100 transition-all duration-700 group-hover:scale-105" 
+        <Image
+            src={image}
+            alt={title}
+            fill
+            className="object-cover opacity-80 group-hover:opacity-100 transition-all duration-700 group-hover:scale-105"
         />
         <div className="absolute inset-0 shadow-[inset_0_0_80px_rgba(0,0,0,0.8)] pointer-events-none transition-opacity duration-500 group-hover:opacity-40" />
-        {/* Minimalist Centered Hover Overlay */}
+        {/* Refined Hover Overlay with Zoom icon */}
         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
-            <div className="w-14 h-14 rounded-full border border-white/30 bg-black/20 backdrop-blur-md flex items-center justify-center transform scale-75 group-hover:scale-100 transition-transform duration-500 ease-out shadow-[0_0_20px_rgba(0,0,0,0.5)]">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
-                    <line x1="12" y1="5" x2="12" y2="19"></line>
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                </svg>
+            <div className="w-14 h-14 rounded-full border border-white/20 bg-black/40 backdrop-blur-lg flex items-center justify-center transform scale-75 group-hover:scale-100 transition-all duration-500 ease-out shadow-[0_0_30px_rgba(0,0,0,0.6)]">
+                <ZoomIn size={22} className="text-white/90" strokeWidth={1.5} />
             </div>
         </div>
+        {/* Bottom gradient fade */}
+        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-black/60 to-transparent pointer-events-none" />
     </div>
 );
 
 const CombinedCard = ({ title, text, image, onOpenModal }: { title: string, text: string, image: string, onOpenModal: (img: string) => void }) => (
-    <div className="w-full h-full bg-zinc-950/95 backdrop-blur-md border border-zinc-800/80 rounded-xl relative group transition-all duration-500 hover:border-red-500/50 hover:bg-zinc-900/95 flex flex-col overflow-hidden text-center items-center shadow-lg">
+    <div className="w-full h-full bg-gradient-to-br from-zinc-950/95 via-zinc-950/90 to-zinc-900/80 backdrop-blur-md border border-zinc-800/60 rounded-2xl relative group transition-all duration-500 hover:border-red-500/40 hover:shadow-[0_8px_40px_rgba(220,38,38,0.08)] hover:-translate-y-1 flex flex-col overflow-hidden text-center items-center shadow-lg">
         <div className="!p-12 sm:!p-16 flex-grow flex flex-col items-center justify-center w-full">
-            <h4 className="text-xl sm:text-2xl font-black text-white uppercase tracking-wider mb-6 group-hover:text-red-500 transition-colors duration-300 w-full">
+            <h4 className="text-xl sm:text-2xl font-black text-white uppercase tracking-wider mb-3 group-hover:text-red-500 transition-colors duration-300 w-full">
                 {title}
             </h4>
-            <p className="text-zinc-300 leading-relaxed text-sm sm:text-base font-medium w-full max-w-sm mx-auto">
+            {/* Decorative separator */}
+            <div className="w-8 h-[2px] bg-red-600/60 rounded-full mb-5 transition-all duration-500 group-hover:w-12 group-hover:bg-red-500" />
+            <p className="text-zinc-400 leading-relaxed text-sm sm:text-base font-medium w-full max-w-sm mx-auto">
                 {text}
             </p>
         </div>
-        <div 
-            className="w-full relative h-[250px] sm:h-[300px] border-t border-zinc-800/80 overflow-hidden cursor-pointer bg-[#050505]"
+        <div
+            className="w-full relative h-[250px] sm:h-[300px] border-t border-zinc-800/40 overflow-hidden cursor-pointer bg-[#050505]"
             onClick={() => onOpenModal(image)}
         >
-            <Image 
-                src={image} 
-                alt={title} 
-                fill 
-                className="object-cover opacity-80 group-hover:opacity-100 transition-all duration-700 group-hover:scale-105" 
+            <Image
+                src={image}
+                alt={title}
+                fill
+                className="object-cover opacity-80 group-hover:opacity-100 transition-all duration-700 group-hover:scale-105"
             />
-            {/* Minimalist Centered Hover Overlay */}
+            {/* Refined Hover Overlay with Zoom icon */}
             <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 z-10">
-                <div className="w-14 h-14 rounded-full border border-white/30 bg-black/20 backdrop-blur-md flex items-center justify-center transform scale-75 group-hover:scale-100 transition-transform duration-500 ease-out shadow-[0_0_20px_rgba(0,0,0,0.5)]">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
-                        <line x1="12" y1="5" x2="12" y2="19"></line>
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                    </svg>
+                <div className="w-14 h-14 rounded-full border border-white/20 bg-black/40 backdrop-blur-lg flex items-center justify-center transform scale-75 group-hover:scale-100 transition-all duration-500 ease-out shadow-[0_0_30px_rgba(0,0,0,0.6)]">
+                    <ZoomIn size={22} className="text-white/90" strokeWidth={1.5} />
                 </div>
             </div>
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
@@ -131,10 +100,50 @@ const CombinedCard = ({ title, text, image, onOpenModal }: { title: string, text
 );
 
 export default function TimelineSection() {
-    const { language } = useLanguage();
+    const { translations } = useLanguage();
+    const timelineData = translations.timeline.items;
+    const year2025 = translations.timeline.year2025;
     const [modalImage, setModalImage] = useState<string | null>(null);
     const containerRef = useRef<HTMLDivElement>(null);
-    
+
+    // Collect all images for navigation
+    const allImages = useMemo(() => {
+        const imgs = timelineData.map((item: { image: string }) => item.image);
+        imgs.push(year2025.left.image, year2025.right.image);
+        return imgs;
+    }, [timelineData, year2025]);
+
+    // Body scroll lock & keyboard navigation
+    useEffect(() => {
+        if (modalImage) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+        return () => { document.body.style.overflow = 'unset'; };
+    }, [modalImage]);
+
+    const navigateImage = useCallback((direction: 'prev' | 'next') => {
+        if (!modalImage) return;
+        const currentIndex = allImages.indexOf(modalImage);
+        if (currentIndex === -1) return;
+        const newIndex = direction === 'next'
+            ? (currentIndex + 1) % allImages.length
+            : (currentIndex - 1 + allImages.length) % allImages.length;
+        setModalImage(allImages[newIndex]);
+    }, [modalImage, allImages]);
+
+    useEffect(() => {
+        if (!modalImage) return;
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') setModalImage(null);
+            if (e.key === 'ArrowRight') navigateImage('next');
+            if (e.key === 'ArrowLeft') navigateImage('prev');
+        };
+        document.addEventListener('keydown', handleKeyDown);
+        return () => document.removeEventListener('keydown', handleKeyDown);
+    }, [modalImage, navigateImage]);
+
     // Scroll progress automation for the line
     const { scrollYProgress } = useScroll({
         target: containerRef,
@@ -145,55 +154,55 @@ export default function TimelineSection() {
 
     return (
         <section className="relative w-full bg-black py-24 sm:py-32 overflow-hidden font-sans flex flex-col items-center">
-            
+
             <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center">
-                
+
                 {/* Header Block */}
-                <motion.div 
+                <motion.div
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true, amount: 0.2 }}
                     variants={fadeUpVariant}
-                    className="flex flex-col items-center justify-center !mb-[20px] text-center w-full"
+                    className="timeline-header flex flex-col items-center justify-center mb-12 sm:mb-16 text-center w-full"
                 >
                     <div className="inline-flex items-center justify-center gap-2 mb-4">
                         <span className="h-1.5 w-1.5 rounded-full bg-red-600 animate-pulse" />
                         <span className="text-[10px] sm:text-xs text-red-500 font-mono tracking-[0.3em] uppercase">
-                            Legacy
+                            {translations.timeline.subtitle}
                         </span>
                         <span className="h-1.5 w-1.5 rounded-full bg-red-600 animate-pulse" />
                     </div>
                     <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-4 uppercase tracking-tighter text-white text-center w-full">
-                        MISSION APOLO 27
+                        {translations.timeline.title}
                     </h2>
                     <h3 className="text-xl sm:text-2xl md:text-3xl font-light text-zinc-500 tracking-widest uppercase text-center w-full">
-                        Our Timeline
+                        {translations.timeline.ourTimeline}
                     </h3>
                 </motion.div>
 
                 {/* Timeline Container */}
                 <div ref={containerRef} className="relative w-full mx-auto flex flex-col items-center justify-center pb-12">
-                    
+
                     {/* Dark Background Track Vertical Line (All Screens) */}
                     <div className="absolute left-1/2 top-0 bottom-0 w-[2px] bg-zinc-900 -translate-x-1/2" />
-                    
+
                     {/* Glowing Progress Vertical Line (All Screens) */}
-                    <motion.div 
+                    <motion.div
                         className="absolute left-1/2 top-0 w-[2px] bg-red-600 -translate-x-1/2 shadow-[0_0_15px_rgba(220,38,38,0.8)] z-0 origin-top"
                         style={{ height: lineHeight, opacity: lineOpacity }}
                     />
 
                     <div className="flex flex-col gap-12 md:gap-20 w-full max-w-5xl mx-auto relative z-10 py-10">
-                        {timelineData.map((item, index) => {
+                        {timelineData.map((item: { year: string; title: string; text: string; image: string }, index: number) => {
                             const isEven = index % 2 === 0;
 
                             return (
-                                <motion.div 
+                                <motion.div
                                     key={item.year}
                                     initial="hidden"
                                     whileInView="visible"
                                     viewport={{ once: true, amount: 0.1 }}
-                                    variants={fadeUpVariant}
+                                    variants={rowContainerVariant}
                                     className="relative flex flex-col md:flex-row items-center justify-between w-full group mt-8 md:mt-16"
                                 >
                                     {/* Center Year Marker for ALL SCREENS (Guarantees perfect alignment) */}
@@ -201,7 +210,7 @@ export default function TimelineSection() {
                                         <span className="text-white font-bold text-base lg:text-lg tracking-widest group-hover:text-red-500 transition-colors duration-500">{item.year}</span>
                                     </div>
 
-                                     <div className="md:hidden flex justify-center items-center mb-10 w-full relative z-30">
+                                    <div className="md:hidden flex justify-center items-center mb-10 w-full relative z-30">
                                         <div className="w-16 h-16 rounded-full bg-black border-2 border-zinc-800 group-hover:border-red-500 transition-colors duration-300 shadow-[0_0_20px_rgba(0,0,0,0.8)] flex items-center justify-center shrink-0 z-20">
                                             <span className="text-white font-bold text-base tracking-widest">{item.year}</span>
                                         </div>
@@ -209,29 +218,29 @@ export default function TimelineSection() {
 
                                     {/* === MOBILE ONLY LAYOUT === */}
                                     <div className="md:hidden flex flex-col w-full items-center justify-center gap-10 relative z-10 px-4">
-                                        <div className="w-full max-w-[320px] sm:max-w-sm"><TextCard title={item.title} text={item.text} /></div>
-                                        <div className="w-full max-w-[320px] sm:max-w-sm"><ImageCard title={item.title} image={item.image} onOpenModal={setModalImage} /></div>
+                                        <motion.div variants={fadeUpVariant} className="w-full max-w-[320px] sm:max-w-sm"><TextCard title={item.title} text={item.text} /></motion.div>
+                                        <motion.div variants={fadeUpVariant} className="w-full max-w-[320px] sm:max-w-sm"><ImageCard title={item.title} image={item.image} onOpenModal={setModalImage} /></motion.div>
                                     </div>
 
                                     {/* === DESKTOP ONLY LAYOUT === */}
                                     <div className="hidden md:flex w-full items-stretch justify-between relative z-10">
-                                        <div className="w-[calc(50%-48px)] flex flex-col">
+                                        <motion.div variants={slideFromLeft} className="w-[calc(50%-48px)] flex flex-col">
                                             {isEven ? <TextCard title={item.title} text={item.text} /> : <ImageCard title={item.title} image={item.image} onOpenModal={setModalImage} />}
-                                        </div>
-                                        <div className="w-[calc(50%-48px)] flex flex-col">
+                                        </motion.div>
+                                        <motion.div variants={slideFromRight} className="w-[calc(50%-48px)] flex flex-col">
                                             {isEven ? <ImageCard title={item.title} image={item.image} onOpenModal={setModalImage} /> : <TextCard title={item.title} text={item.text} />}
-                                        </div>
+                                        </motion.div>
                                     </div>
                                 </motion.div>
                             );
                         })}
 
                         {/* 2025 Split Layout */}
-                        <motion.div 
+                        <motion.div
                             initial="hidden"
                             whileInView="visible"
                             viewport={{ once: true, amount: 0.1 }}
-                            variants={fadeUpVariant}
+                            variants={rowContainerVariant}
                             className="relative flex flex-col md:flex-row justify-between items-center md:items-start w-full mt-12 md:mt-24 group"
                         >
                             {/* Desktop Center Year Marker */}
@@ -248,22 +257,22 @@ export default function TimelineSection() {
 
                             {/* === MOBILE ONLY LAYOUT (2025) === */}
                             <div className="md:hidden flex flex-col w-full items-center justify-center gap-10 relative z-10 px-4">
-                                <div className="w-full max-w-[320px] sm:max-w-sm">
+                                <motion.div variants={fadeUpVariant} className="w-full max-w-[320px] sm:max-w-sm">
                                     <CombinedCard title={year2025.left.title} text={year2025.left.text} image={year2025.left.image} onOpenModal={setModalImage} />
-                                </div>
-                                <div className="w-full max-w-[320px] sm:max-w-sm">
+                                </motion.div>
+                                <motion.div variants={fadeUpVariant} className="w-full max-w-[320px] sm:max-w-sm">
                                     <CombinedCard title={year2025.right.title} text={year2025.right.text} image={year2025.right.image} onOpenModal={setModalImage} />
-                                </div>
+                                </motion.div>
                             </div>
 
                             {/* === DESKTOP ONLY LAYOUT (2025) === */}
                             <div className="hidden md:flex w-full items-start justify-between relative z-10">
-                                <div className="w-[calc(50%-48px)] flex flex-col">
+                                <motion.div variants={slideFromLeft} className="w-[calc(50%-48px)] flex flex-col">
                                     <CombinedCard title={year2025.left.title} text={year2025.left.text} image={year2025.left.image} onOpenModal={setModalImage} />
-                                </div>
-                                <div className="w-[calc(50%-48px)] flex flex-col mt-24">
+                                </motion.div>
+                                <motion.div variants={slideFromRight} className="w-[calc(50%-48px)] flex flex-col mt-24">
                                     <CombinedCard title={year2025.right.title} text={year2025.right.text} image={year2025.right.image} onOpenModal={setModalImage} />
-                                </div>
+                                </motion.div>
                             </div>
                         </motion.div>
 
@@ -272,39 +281,77 @@ export default function TimelineSection() {
 
             </div>
 
-            {/* Minimalist Image Modal Overlay */}
+            {/* Enhanced Image Modal */}
             <AnimatePresence>
                 {modalImage && (
-                    <motion.div 
+                    <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        transition={{ duration: 0.2 }}
-                        className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4 sm:p-8 cursor-zoom-out"
+                        transition={{ duration: 0.3, ease: "easeOut" }}
+                        className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-xl p-4 sm:p-8 cursor-zoom-out"
                         onClick={() => setModalImage(null)}
                     >
-                        <motion.div 
-                            initial={{ scale: 0.98, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            exit={{ scale: 0.98, opacity: 0 }}
-                            transition={{ duration: 0.2 }}
-                            className="relative w-full max-w-3xl md:max-w-4xl aspect-[4/3] md:aspect-video rounded-xl overflow-hidden shadow-2xl border border-zinc-800/80 cursor-default bg-[#050505]"
-                            onClick={(e) => e.stopPropagation()} // Prevent click-through closing
+                        {/* Navigation Arrow - Previous */}
+                        <button
+                            onClick={(e) => { e.stopPropagation(); navigateImage('prev'); }}
+                            className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-[120] w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-zinc-900/60 hover:bg-zinc-800/80 border border-zinc-700/50 hover:border-red-500/50 backdrop-blur-md flex items-center justify-center text-white/70 hover:text-white transition-all duration-300 hover:scale-110"
+                            aria-label="Previous image"
                         >
-                            <Image 
-                                src={modalImage} 
-                                alt="Expanded View" 
-                                fill 
-                                className="object-contain" 
-                            />
-                            
-                            {/* Minimalist Close button top right inside modal */}
-                            <button 
+                            <ChevronLeft size={20} />
+                        </button>
+
+                        {/* Navigation Arrow - Next */}
+                        <button
+                            onClick={(e) => { e.stopPropagation(); navigateImage('next'); }}
+                            className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-[120] w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-zinc-900/60 hover:bg-zinc-800/80 border border-zinc-700/50 hover:border-red-500/50 backdrop-blur-md flex items-center justify-center text-white/70 hover:text-white transition-all duration-300 hover:scale-110"
+                            aria-label="Next image"
+                        >
+                            <ChevronRight size={20} />
+                        </button>
+
+                        {/* Modal Content */}
+                        <motion.div
+                            initial={{ scale: 0.9, opacity: 0, y: 30 }}
+                            animate={{ scale: 1, opacity: 1, y: 0 }}
+                            exit={{ scale: 0.92, opacity: 0, y: 20 }}
+                            transition={{
+                                type: "spring",
+                                stiffness: 300,
+                                damping: 25,
+                                mass: 0.8
+                            }}
+                            className="relative w-full max-w-3xl md:max-w-5xl aspect-[4/3] md:aspect-video rounded-2xl overflow-hidden shadow-[0_25px_80px_rgba(0,0,0,0.8)] border border-zinc-700/40 cursor-default bg-[#050505]"
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            {/* Subtle animated red glow border */}
+                            <div className="absolute -inset-[1px] rounded-2xl bg-gradient-to-br from-red-600/20 via-transparent to-red-600/10 pointer-events-none z-0 animate-pulse" style={{ animationDuration: '4s' }} />
+
+                            <div className="relative w-full h-full rounded-2xl overflow-hidden z-10">
+                                <Image
+                                    src={modalImage}
+                                    alt="Expanded View"
+                                    fill
+                                    className="object-contain"
+                                    sizes="(max-width: 768px) 100vw, 80vw"
+                                />
+                            </div>
+
+                            {/* Close button - consistent with other modals */}
+                            <button
                                 onClick={() => setModalImage(null)}
-                                className="absolute top-4 right-4 bg-zinc-900/80 hover:bg-black border border-zinc-800 hover:border-red-500 transition-colors p-2 rounded-lg text-white z-[110]"
+                                className="absolute top-3 right-3 sm:top-4 sm:right-4 z-[130] w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-zinc-900/70 hover:bg-red-600/90 border border-zinc-700/50 hover:border-red-500 backdrop-blur-md flex items-center justify-center text-white/80 hover:text-white transition-all duration-300 hover:scale-110 hover:shadow-[0_0_20px_rgba(220,38,38,0.4)]"
+                                aria-label="Close"
                             >
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                <X size={18} strokeWidth={2} />
                             </button>
+
+                            {/* Image counter indicator */}
+                            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-[130] px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-zinc-800/50">
+                                <span className="text-zinc-400 text-xs font-mono tracking-wider">
+                                    {allImages.indexOf(modalImage) + 1} / {allImages.length}
+                                </span>
+                            </div>
                         </motion.div>
                     </motion.div>
                 )}

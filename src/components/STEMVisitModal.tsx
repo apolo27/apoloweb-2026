@@ -5,6 +5,7 @@ import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/context/LanguageContext';
 import { X, Calendar, Clock } from 'lucide-react';
+import emailjs from '@emailjs/browser';
 
 interface STEMVisitModalProps {
     isOpen: boolean;
@@ -115,8 +116,20 @@ export default function STEMVisitModal({ isOpen, onClose }: STEMVisitModalProps)
         setIsSubmitting(true);
 
         try {
-            await new Promise(resolve => setTimeout(resolve, 1500));
-            console.log('Form submitted:', formData);
+            await emailjs.send(
+                process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
+                process.env.NEXT_PUBLIC_EMAILJS_STEM_TEMPLATE_ID!,
+                {
+                    institution_name: formData.institutionName,
+                    contact_name: formData.contactName,
+                    email: formData.email,
+                    phone: formData.phone,
+                    preferred_date: formData.preferredDate,
+                    preferred_time: formData.preferredTime,
+                    message: formData.message,
+                },
+                process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
+            );
             setSubmitStatus('success');
             setFormData(initialFormData);
         } catch {

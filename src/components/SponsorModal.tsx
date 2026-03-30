@@ -5,6 +5,7 @@ import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/context/LanguageContext';
 import { X } from 'lucide-react';
+import emailjs from '@emailjs/browser';
 
 interface SponsorModalProps {
     isOpen: boolean;
@@ -155,8 +156,19 @@ export default function SponsorModal({ isOpen, onClose }: SponsorModalProps) {
         setIsSubmitting(true);
 
         try {
-            await new Promise(resolve => setTimeout(resolve, 1500));
-            console.log('Sponsor form submitted:', formData);
+            await emailjs.send(
+                process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
+                process.env.NEXT_PUBLIC_EMAILJS_SPONSOR_TEMPLATE_ID!,
+                {
+                    company_name: formData.companyName,
+                    email: formData.email,
+                    phone: formData.phone,
+                    social_link: formData.socialLink,
+                    company_activity: formData.companyActivity,
+                    description: formData.description,
+                },
+                process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
+            );
             setSubmitStatus('success');
             setFormData(initialFormData);
         } catch {

@@ -5,7 +5,6 @@ import HeroSection from "@/components/HeroSection";
 import ScrollRevealSection from "@/components/ScrollRevealSection";
 import Header from "@/components/Header";
 import SaveTheDateSection from "@/components/SaveTheDateSection";
-// import HallOfFameSection from "@/components/HallOfFameSection";
 import TimelineSection from "@/components/TimelineSection";
 import SponsorsSection from "@/components/SponsorsSection";
 import SocialMediaSection from "@/components/SocialMediaSection";
@@ -29,9 +28,6 @@ export default function Home() {
       {/* Sections with Meteors Background */}
       <div className="relative overflow-hidden">
         <div className="relative z-10">
-          {/* Hall of Fame - Engineering showcase (Commented out per request) */}
-          {/* <HallOfFameSection /> */}
-
           {/* Mission Timeline */}
           <TimelineSection />
 

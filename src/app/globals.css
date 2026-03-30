@@ -791,6 +791,19 @@ body {
 }
 
 /* ================================
+   TIMELINE HEADER SPACING
+   ================================ */
+.timeline-header {
+  margin-bottom: 3rem !important;
+}
+
+@media (min-width: 640px) {
+  .timeline-header {
+    margin-bottom: 4rem !important;
+  }
+}
+
+/* ================================
    SOCIAL MEDIA SECTION - FULL RESPONSIVE
    ================================ */
 
