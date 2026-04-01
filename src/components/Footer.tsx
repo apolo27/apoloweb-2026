@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { Globe } from '@/components/ui/globe';
+import dynamic from 'next/dynamic';
+const Globe = dynamic(() => import('@/components/ui/globe').then((mod) => mod.Globe), { ssr: false });
 import { useLanguage } from '@/context/LanguageContext';
 import STEMVisitModal from '@/components/STEMVisitModal';
 import SponsorModal from '@/components/SponsorModal';

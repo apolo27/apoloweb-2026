@@ -75,44 +75,44 @@
                 "year": "2019",
                 "title": "EL ORIGEN",
                 "text": "Nuestro viaje comenzó en 2019 con un logro histórico: convertirnos en el primer equipo universitario de nuestro país en competir en el NASA Rover Challenge.",
-                "image": "/stem/stem-1.webp"
+                "image": "/images/timeline/2019.webp"
             },
             {
                 "year": "2020",
                 "title": "PERSEVERANCIA EN LA ADVERSIDAD",
                 "text": "A pesar de los desafíos de la pandemia global, nuestra resiliencia brilló. Las lecciones aprendidas allanaron el camino para nuestra histórica victoria en el 'System Safety Award'.",
-                "image": "/stem/stem-2.webp"
+                "image": "/images/timeline/2020.webp"
             },
             {
                 "year": "2022",
                 "title": "EXPANDIENDO NUESTRO IMPACTO",
                 "text": "2022 marcó un punto de inflexión con el lanzamiento de nuestro 'STEM Tour' interactivo, culminando en la obtención del prestigioso 'Engagement Award'.",
-                "image": "/stem/stem-3.webp"
+                "image": "/images/timeline/2022.webp"
             },
             {
                 "year": "2023",
                 "title": "UN AÑO HISTÓRICO",
                 "text": "¡Un año de dominio dominicano! Grandes mejoras nos ganaron los premios 'Most Improved' y 'Team Spirit', consolidando nuestro lugar en la historia.",
-                "image": "/stem/stem-4.webp"
+                "image": "/images/timeline/2023.webp"
             },
             {
                 "year": "2024",
                 "title": "ESTABLECIENDO EL ESTÁNDAR",
                 "text": "Aprovechando los éxitos de 2023, alcanzamos nuevas alturas en 2024. Nuestro arduo trabajo nos ganó el codiciado 'Overall Award (2do lugar)' y el 'Spirit Award', mostrando excelencia y unidad.",
-                "image": "/stem/stem-1.webp"
+                "image": "/images/timeline/2024.webp"
             }
         ],
         "year2025": {
             "year": "2025",
             "left": {
-                "title": "NUEVAS FRONTERAS",
-                "text": "El amanecer de la División Apolo marca un nuevo capítulo en 2025. Con nuestras miras altas, estamos empujando los límites de la innovación y el trabajo en equipo.",
-                "image": "/stem/stem-2.webp"
+                "title": "NUESTRA DIVISIÓN HP",
+                "text": "Continuamos superando los límites en 2025 con nuestra División HP (Human Powered). Enfocados en la innovación, el rendimiento físico y el trabajo en equipo para conquistar cualquier desafío en los terrenos extraterrestres.",
+                "image": "/images/timeline/2025-hp.webp"
             },
             "right": {
                 "title": "PIONEROS EN MISIONES RC",
                 "text": "Nuestro equipo RC se embarca en su primer año con ideas audaces e ingeniería aún más audaz. Estamos listos para dejar nuestra huella en el mundo de la exploración por control remoto.",
-                "image": "/stem/stem-3.webp"
+                "image": "/images/timeline/2025-rc.webp"
             }
         }
     }

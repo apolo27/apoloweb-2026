@@ -16,7 +16,7 @@ type NavItem = {
 const navItems: NavItem[] = [
     { id: 'hero', labelEs: 'INICIO', labelEn: 'HOME', type: 'scroll' },
     { id: 'save-the-date', labelEs: 'EVENTO', labelEn: 'EVENT', type: 'scroll' },
-    { id: 'achievements', labelEs: 'LOGROS', labelEn: 'ACHIEVEMENTS', type: 'scroll' },
+    { id: 'timeline', labelEs: 'NUESTRA HISTORIA', labelEn: 'OUR HISTORY', type: 'scroll' },
     { id: 'sponsors', labelEs: 'ALIADOS', labelEn: 'SPONSORS', type: 'scroll' },
     { id: 'stem', labelEs: 'VISITAS STEM', labelEn: 'STEM VISITS', type: 'scroll' },
     { id: 'social', labelEs: 'REDES', labelEn: 'SOCIAL', type: 'scroll' },
@@ -196,10 +196,10 @@ export default function NavigationMenu() {
                                         (EMAIL)
                                     </span>
                                     <a
-                                        href="mailto:contacto@apolo27.com"
+                                        href="mailto:apolo27rd@outlook.com"
                                         className="text-red-500 hover:text-red-400 text-lg sm:text-xl lg:text-2xl transition-colors font-light"
                                     >
-                                        contacto@apolo27.com
+                                        apolo27rd@outlook.com
                                     </a>
                                 </motion.div>
 

@@ -2122,3 +2122,108 @@ body {
     font-size: 16px;
   }
 }
+
+/* ========================================
+   YOUTUBE WATCH BUTTON 
+   ======================================== */
+.youtube-watch-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: rgba(20, 20, 20, 0.15);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-radius: 9999px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  border-left: 1px solid rgba(255, 255, 255, 0.03);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 255, 255, 0.06);
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  overflow: hidden;
+  
+  /* Duplicate STEM CTA sizing */
+  padding: 1rem 2rem;
+  min-width: 280px;
+}
+
+@media (min-width: 640px) {
+  .youtube-watch-btn {
+    padding: 1.125rem 2.25rem;
+    min-width: 320px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .youtube-watch-btn {
+    padding: 1.125rem 2.5rem;
+    min-width: 340px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .youtube-watch-btn {
+    padding: 1.25rem 2.75rem;
+    min-width: 360px;
+  }
+}
+
+@media (min-width: 1536px) {
+  .youtube-watch-btn {
+    padding: 1.375rem 3rem;
+    min-width: 380px;
+  }
+}
+
+/* Hover effects */
+.youtube-watch-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 255, 255, 0.12);
+}
+
+.youtube-watch-btn:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+/* Icon Wrapper */
+.youtube-watch-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  flex-shrink: 0;
+}
+
+.youtube-watch-btn:hover .youtube-watch-icon-wrapper {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
+}
+
+.youtube-watch-icon {
+  width: 24px;
+  height: 24px;
+  fill: #e7e5e5;
+  transition: fill 0.4s ease;
+}
+
+.youtube-watch-btn:hover .youtube-watch-icon {
+  fill: #ffffff;
+}
+
+/* Text */
+.youtube-watch-text {
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: #e7e5e5;
+  transition: color 0.4s ease;
+  font-size: 1rem;
+}
+
+.youtube-watch-btn:hover .youtube-watch-text {
+  color: #ffffff;
+}

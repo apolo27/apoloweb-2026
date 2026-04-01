@@ -45,7 +45,7 @@ export default function ScrollRevealSection() {
         <section
             ref={containerRef}
             className="relative bg-black"
-            style={{ height: '120vh' }}
+            style={{ height: '200vh' }}
         >
             {/* Sticky container */}
             <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center">

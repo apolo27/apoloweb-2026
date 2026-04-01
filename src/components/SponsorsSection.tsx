@@ -48,7 +48,7 @@ export default function SponsorsSection() {
         <section
             id="sponsors"
             ref={sectionRef}
-            className="section-spacing relative w-full bg-black overflow-hidden !pt-12 !mt-24 sm:!mt-32 z-0"
+            className="section-spacing relative w-full bg-black overflow-hidden !pt-12 !mt-24 sm:!mt-32 z-0 font-[family-name:var(--font-poppins)]"
         >
             <motion.div
                 className="relative z-10"
@@ -62,10 +62,10 @@ export default function SponsorsSection() {
                     className="text-center mb-16 sm:mb-20 md:mb-28 px-4"
                     style={{ marginBottom: '50px' }}
                 >
-                    <p className="text-zinc-500 text-xs sm:text-sm font-light tracking-[0.3em] uppercase mb-4">
+                    <p className="text-zinc-500 text-xs sm:text-sm font-mono tracking-[0.3em] uppercase mb-4">
                         {t('sponsors.subtitle') || 'Patrocinadores Oficiales'}
                     </p>
-                    <h2 className="text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light tracking-wide">
+                    <h2 className="text-white text-4xl sm:text-5xl md:text-6xl font-medium font-[family-name:var(--font-dancing-script)] mt-2">
                         {t('sponsors.title') || 'Nuestros Aliados'}
                     </h2>
                 </motion.div>

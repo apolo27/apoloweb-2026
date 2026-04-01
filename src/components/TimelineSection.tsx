@@ -153,7 +153,7 @@ export default function TimelineSection() {
     const lineOpacity = useTransform(scrollYProgress, [0, 1], [0.1, 1]);
 
     return (
-        <section className="relative w-full bg-black py-24 sm:py-32 overflow-hidden font-sans flex flex-col items-center">
+        <section id="timeline" className="relative w-full bg-black py-24 sm:py-32 overflow-hidden font-[family-name:var(--font-poppins)] flex flex-col items-center">
 
             <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center">
 
@@ -175,7 +175,7 @@ export default function TimelineSection() {
                     <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-4 uppercase tracking-tighter text-white text-center w-full">
                         {translations.timeline.title}
                     </h2>
-                    <h3 className="text-xl sm:text-2xl md:text-3xl font-light text-zinc-500 tracking-widest uppercase text-center w-full">
+                    <h3 className="text-3xl sm:text-4xl md:text-5xl font-medium text-zinc-500 text-center w-full font-[family-name:var(--font-dancing-script)] mt-2">
                         {translations.timeline.ourTimeline}
                     </h3>
                 </motion.div>
@@ -207,12 +207,12 @@ export default function TimelineSection() {
                                 >
                                     {/* Center Year Marker for ALL SCREENS (Guarantees perfect alignment) */}
                                     <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 lg:w-16 lg:h-16 w-14 h-14 rounded-full bg-black border-2 border-zinc-800 group-hover:border-red-500 transition-colors duration-500 items-center justify-center z-20 shadow-[0_0_20px_rgba(0,0,0,0.8)]">
-                                        <span className="text-white font-bold text-base lg:text-lg tracking-widest group-hover:text-red-500 transition-colors duration-500">{item.year}</span>
+                                        <span className="text-white font-[family-name:var(--font-dancing-script)] font-bold text-xl lg:text-2xl group-hover:text-red-500 transition-colors duration-500">{item.year}</span>
                                     </div>
 
                                     <div className="md:hidden flex justify-center items-center mb-10 w-full relative z-30">
                                         <div className="w-16 h-16 rounded-full bg-black border-2 border-zinc-800 group-hover:border-red-500 transition-colors duration-300 shadow-[0_0_20px_rgba(0,0,0,0.8)] flex items-center justify-center shrink-0 z-20">
-                                            <span className="text-white font-bold text-base tracking-widest">{item.year}</span>
+                                            <span className="text-white font-[family-name:var(--font-dancing-script)] font-bold text-xl">{item.year}</span>
                                         </div>
                                     </div>
 
@@ -245,13 +245,13 @@ export default function TimelineSection() {
                         >
                             {/* Desktop Center Year Marker */}
                             <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 w-20 h-20 rounded-full bg-black border-2 border-zinc-800 group-hover:border-red-500 transition-colors duration-500 items-center justify-center z-20 shadow-[0_0_20px_rgba(0,0,0,0.8)]">
-                                <span className="text-white font-black text-xl tracking-widest group-hover:text-red-500">{year2025.year}</span>
+                                <span className="text-white font-[family-name:var(--font-dancing-script)] font-bold text-3xl group-hover:text-red-500">{year2025.year}</span>
                             </div>
 
                             {/* Mobile Year Badge */}
                             <div className="md:hidden flex justify-center items-center mb-10 w-full relative z-30">
                                 <div className="w-20 h-20 rounded-full bg-black border-2 border-zinc-800 shadow-[0_0_25px_rgba(0,0,0,0.8)] flex items-center justify-center shrink-0 z-20">
-                                    <span className="text-white font-black text-xl tracking-widest">{year2025.year}</span>
+                                    <span className="text-white font-[family-name:var(--font-dancing-script)] font-bold text-3xl">{year2025.year}</span>
                                 </div>
                             </div>
 

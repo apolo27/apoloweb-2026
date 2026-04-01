@@ -52,7 +52,7 @@ export default function SocialMediaSection() {
         <section
             id="social"
             ref={sectionRef}
-            className="section-spacing relative w-full bg-black overflow-hidden"
+            className="section-spacing relative w-full bg-black overflow-hidden font-[family-name:var(--font-poppins)]"
         >
             <motion.div
                 className="social-section-wrapper"
@@ -68,10 +68,10 @@ export default function SocialMediaSection() {
                         className="social-text-content"
                         variants={titleVariants}
                     >
-                        <p className="text-zinc-500 text-xs sm:text-sm font-light tracking-[0.3em] uppercase mb-4">
+                        <p className="text-zinc-500 text-xs sm:text-sm font-mono tracking-[0.3em] uppercase mb-4">
                             {t('social.subtitle')}
                         </p>
-                        <h2 className="social-title text-white font-light tracking-wide mb-6">
+                        <h2 className="social-title text-white font-[family-name:var(--font-dancing-script)] font-medium mb-6 mt-2 text-4xl sm:text-5xl md:text-6xl">
                             {t('social.title')}
                         </h2>
                         <p className="social-description text-zinc-400">
