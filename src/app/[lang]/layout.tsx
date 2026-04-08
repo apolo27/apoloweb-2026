@@ -71,6 +71,10 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
       description: t.cardDesc,
       images: ["/images/Apolo%2027%20HP%20-%20blanco.png"],
     },
+    icons: {
+      icon: "/logos/icon.ico",
+      shortcut: "/logos/icon.ico",
+    },
     robots: {
       index: true,
       follow: true,
@@ -117,7 +121,6 @@ export default async function RootLayout({
   return (
     <html lang={lang} suppressHydrationWarning>
       <head>
-        <link rel="icon" href="/logos/icon.ico" />
         {/* Preload hero video for faster LCP */}
         <link rel="preload" as="video" href="/videos/moon_cinematic6.webm" type="video/webm" />
         {/* Injecting JSON-LD structurally to the DOM */}
