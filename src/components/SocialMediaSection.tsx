@@ -136,7 +136,7 @@ export default function SocialMediaSection() {
 
                             {/* YouTube Card */}
                             <motion.a
-                                href="https://youtube.com/@apolo27"
+                                href="https://www.youtube.com/@apolo2730"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="social-bento-card social-card-youtube"
