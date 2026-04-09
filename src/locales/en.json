@@ -114,6 +114,13 @@
                 "text": "Our RC team embarks on its first year with bold ideas and even bolder engineering. We're ready to make our mark in the world of remote-controlled exploration.",
                 "image": "/images/timeline/2025-rc.webp"
             }
+        },
+        "year2026": {
+            "year": "2026",
+            "badge": "CURRENT TEAM",
+            "title": "THE ADVENTURE CONTINUES",
+            "text": "This year, Team Apolo 27 embarks on a new adventure. With fresh faces, bold ideas, and the same passion that defined our history, we are ready to write the next chapter.",
+            "image": "/images/timeline/2026.webp"
         }
     }
 }

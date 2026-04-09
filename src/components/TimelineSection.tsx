@@ -101,19 +101,40 @@ const CombinedCard = ({ title, text, image, onOpenModal }: { title: string, text
     </div>
 );
 
+const CurrentTeamTextCard = ({ badge, title, text }: { badge: string, title: string, text: string }) => (
+    <div className="w-full h-full bg-gradient-to-br from-zinc-950/95 via-zinc-950/90 to-zinc-900/80 backdrop-blur-md border border-red-600/40 !p-12 sm:!p-16 rounded-2xl relative group transition-all duration-500 hover:border-red-500/60 hover:shadow-[0_8px_40px_rgba(220,38,38,0.12)] hover:-translate-y-1 flex flex-col justify-start items-center text-center shadow-[0_0_30px_rgba(220,38,38,0.05)]">
+        <div className="absolute inset-0 rounded-2xl bg-red-600/5 animate-pulse pointer-events-none" />
+        <div className="absolute top-0 left-0 w-5 h-5 border-t-2 border-l-2 border-red-500 rounded-tl-2xl transition-all duration-500 group-hover:w-8 group-hover:h-8" />
+        <div className="absolute bottom-0 right-0 w-5 h-5 border-b-2 border-r-2 border-red-500 rounded-br-2xl transition-all duration-500 group-hover:w-8 group-hover:h-8" />
+
+        <div className="inline-flex items-center gap-2 mb-5 px-3 py-1.5 rounded-full bg-red-600/15 border border-red-500/40 relative z-10">
+            <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse shadow-[0_0_6px_rgba(220,38,38,0.8)]" />
+            <span className="text-red-400 text-[10px] font-mono tracking-[0.25em] uppercase font-semibold">{badge}</span>
+        </div>
+        <h4 className="text-xl sm:text-2xl font-black text-white uppercase tracking-wider mb-3 group-hover:text-red-500 transition-colors duration-300 w-full relative z-10">
+            {title}
+        </h4>
+        <div className="w-8 h-[2px] bg-red-600/60 rounded-full mb-5 transition-all duration-500 group-hover:w-12 group-hover:bg-red-500" />
+        <p className="text-zinc-400 leading-relaxed text-sm sm:text-base font-medium w-full max-w-sm mx-auto relative z-10">
+            {text}
+        </p>
+    </div>
+);
+
 export default function TimelineSection() {
     const { translations } = useLanguage();
     const timelineData = translations.timeline.items;
     const year2025 = translations.timeline.year2025;
+    const year2026 = translations.timeline.year2026;
     const [modalImage, setModalImage] = useState<string | null>(null);
     const containerRef = useRef<HTMLDivElement>(null);
 
     // Collect all images for navigation
     const allImages = useMemo(() => {
         const imgs = timelineData.map((item: { image: string }) => item.image);
-        imgs.push(year2025.left.image, year2025.right.image);
+        imgs.push(year2025.left.image, year2025.right.image, year2026.image);
         return imgs;
-    }, [timelineData, year2025]);
+    }, [timelineData, year2025, year2026]);
 
     // Body scroll lock & keyboard navigation
     useEffect(() => {
@@ -274,6 +295,49 @@ export default function TimelineSection() {
                                 </motion.div>
                                 <motion.div variants={slideFromRight} className="w-[calc(50%-48px)] flex flex-col mt-24">
                                     <CombinedCard title={year2025.right.title} text={year2025.right.text} image={year2025.right.image} onOpenModal={setModalImage} />
+                                </motion.div>
+                            </div>
+                        </motion.div>
+
+                        {/* 2026 Current Team */}
+                        <motion.div
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true, amount: 0.1 }}
+                            variants={rowContainerVariant}
+                            className="relative flex flex-col md:flex-row items-center justify-between w-full mt-12 md:mt-24 group"
+                        >
+                            {/* Desktop center year marker */}
+                            <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 w-20 h-20 rounded-full bg-black border-2 border-red-500 shadow-[0_0_30px_rgba(220,38,38,0.4)] items-center justify-center z-20">
+                                <div className="absolute inset-0 rounded-full border-2 border-red-500/30 animate-ping" />
+                                <span className="text-red-500 font-[family-name:var(--font-poppins)] font-bold text-3xl">{year2026.year}</span>
+                            </div>
+
+                            {/* Mobile year badge */}
+                            <div className="md:hidden flex justify-center items-center mb-10 w-full relative z-30">
+                                <div className="relative w-20 h-20 rounded-full bg-black border-2 border-red-500 shadow-[0_0_30px_rgba(220,38,38,0.4)] flex items-center justify-center shrink-0 z-20">
+                                    <div className="absolute inset-0 rounded-full border-2 border-red-500/30 animate-ping" />
+                                    <span className="text-red-500 font-[family-name:var(--font-poppins)] font-bold text-3xl">{year2026.year}</span>
+                                </div>
+                            </div>
+
+                            {/* === MOBILE ONLY LAYOUT (2026) === */}
+                            <div className="md:hidden flex flex-col w-full items-center justify-center gap-10 relative z-10 px-4">
+                                <motion.div variants={fadeUpVariant} className="w-full max-w-[320px] sm:max-w-sm">
+                                    <CurrentTeamTextCard badge={year2026.badge} title={year2026.title} text={year2026.text} />
+                                </motion.div>
+                                <motion.div variants={fadeUpVariant} className="w-full max-w-[320px] sm:max-w-sm">
+                                    <ImageCard title={year2026.title} image={year2026.image} onOpenModal={setModalImage} />
+                                </motion.div>
+                            </div>
+
+                            {/* === DESKTOP ONLY LAYOUT (2026) === */}
+                            <div className="hidden md:flex w-full items-stretch justify-between relative z-10">
+                                <motion.div variants={slideFromLeft} className="w-[calc(50%-48px)] flex flex-col">
+                                    <CurrentTeamTextCard badge={year2026.badge} title={year2026.title} text={year2026.text} />
+                                </motion.div>
+                                <motion.div variants={slideFromRight} className="w-[calc(50%-48px)] flex flex-col">
+                                    <ImageCard title={year2026.title} image={year2026.image} onOpenModal={setModalImage} />
                                 </motion.div>
                             </div>
                         </motion.div>

@@ -114,6 +114,13 @@
                 "text": "Nuestro equipo RC se embarca en su primer año con ideas audaces e ingeniería aún más audaz. Estamos listos para dejar nuestra huella en el mundo de la exploración por control remoto.",
                 "image": "/images/timeline/2025-rc.webp"
             }
+        },
+        "year2026": {
+            "year": "2026",
+            "badge": "EQUIPO ACTUAL",
+            "title": "LA AVENTURA CONTINÚA",
+            "text": "Este año, el Equipo Apolo 27 se embarca en una nueva aventura. Con sangre nueva, ideas frescas y la misma pasión que marcó nuestra historia, estamos listos para escribir el próximo capítulo.",
+            "image": "/images/timeline/2026.webp"
         }
     }
 }
